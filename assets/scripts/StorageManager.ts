@@ -70,6 +70,17 @@ export class StorageManager {
     del(key: string) {
         sys.localStorage.removeItem(key);
     }
+
+
+
+    // 设置静态常量，定义好allData的预设空结构
+    // 第一次启动时，直接用这个常量当getObj的默认值，避免导出写重复的空数组结构
+    public static readonly DEFAULT_ALL_DATA = {
+        materialList: [],
+        tagList: [],
+        themeList: [],
+        artworkList: []
+    }
 }
 
 
