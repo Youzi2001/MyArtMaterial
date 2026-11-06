@@ -6,7 +6,7 @@
 3、视图层：遍历数组 → 动态实例化预制体（Item）→ 设置图片 → 放入ScrollView的Content节点下
 */
 
-import { _decorator, Component, Node, Prefab, instantiate, Layout, ScrollView, find } from 'cc';
+import { _decorator, SpriteFrame, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
 const { ccclass, property } = _decorator;
 
@@ -18,10 +18,27 @@ export class MaterialPanel extends Component {
     @property(Node)
     contentNode: Node = null; // 绑定 ScrollView 下的 content 节点
 
+    @property(Sprite)
+    bigImageSprite: Sprite = null; // 弹窗里的大图
+
+    @property(Node)
+    previewPopup: Node = null; //弹窗根节点
+
+    @property(Button)
+    btnClose: Button = null; // 关闭按钮
+
+
+
     // 模拟的数据源：存储素材图片的路径
     private materialList: string[] = [];
 
     onLoad(){
+        // 关闭按钮监听
+        this.btnClose.node.on(Button.EventType.CLICK, this.hidePreview,this);
+
+        // 弹窗默认隐藏
+        this.previewPopup.active = false;
+
         // 1. 初始化： 确保 content 节点有 Layout 组件自动排列
         const layout = this.contentNode.getComponent(Layout);
         if (!layout) {
@@ -30,7 +47,7 @@ export class MaterialPanel extends Component {
         }
 
         // 初始加载一些假数据测试
-        this.addMaterialToData("textures/default_material");
+        //this.addMaterialToData("textures/default_material/spriteFrame");
         this.refreshListView();
     }
 
@@ -43,9 +60,9 @@ export class MaterialPanel extends Component {
 
         // 2.模拟上传成功：往数据数组里加一个新路径
         // 实际项目中这里会是网络请求回调
-        const newMaterialPath = "textures/default_material"; // 这里用同一张图测试，实际可以是不同路径
+        const newMaterialPath = "textures/bag/spriteFrame"; // 这里用同一张图测试，实际可以是不同路径
         this.addMaterialToData(newMaterialPath);
-
+        console.log("当前素材数据列表：", this.materialList);
         //3.刷新界面
         this.refreshListView();
     }
@@ -76,11 +93,32 @@ export class MaterialPanel extends Component {
             const itemComp = newItem.getComponent(MaterialItem);
             if (itemComp) {
                 itemComp.setMaterial(path);
+                itemComp.setPath(path);
+                // 注入点击回调
+                itemComp.setClickCallback(this.showPreview.bind(this));
             }
 
             // 添加到 Content 节点下，Layout会自动处理位置
             this.contentNode.addChild(newItem);
         }
+    }
+    
+
+    /**显示大图预览 */
+    private showPreview(path: string) {
+        // 去掉末尾的 /spriteFrame
+        const cleanPath = path.replace(/\/spriteFrame$/, '');
+        console.log('【预览路径】', path);
+        resources.load(path, SpriteFrame, (err,spriteFrame) => {
+            if (err) return console.error(err);
+            this.bigImageSprite.spriteFrame = spriteFrame;
+            this.previewPopup.active = true;
+        })
+    }
+
+    /** 关闭预览 */
+    private hidePreview() {
+        this.previewPopup.active = false;
     }
 }
 
