@@ -1966,7 +1966,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "57520716-48c8-4a19-8acf-41c9f8777fb0@f9941",
+      "__uuid__": "7d8f9b89-4fd1-4c9f-a3ab-38ec7cded7ca@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -2423,6 +2423,10 @@
     },
     "btnClose": {
       "__id__": 58
+    },
+    "confirmDialogPrefab": {
+      "__uuid__": "275eccc2-5756-4cf6-94b1-92167b6db001",
+      "__expectedType__": "cc.Prefab"
     },
     "_id": "42jjaB3VNHNLmlBtzjLnsQ"
   },

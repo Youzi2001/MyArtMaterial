@@ -245,9 +245,7 @@
     "spIcon": {
       "__id__": 5
     },
-    "btnClose": {
-      "__id__": 12
-    },
+    "btnItem": null,
     "_id": ""
   },
   {
