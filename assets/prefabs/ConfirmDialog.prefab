@@ -71,7 +71,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Mask",
+    "_name": "mask",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -228,7 +228,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Panel",
+    "_name": "panel",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -291,7 +291,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Title",
+    "_name": "lblTitle",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -450,7 +450,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Content",
+    "_name": "lblConten",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -666,7 +666,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Label",
+    "_name": "lblYes",
     "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
@@ -1038,7 +1038,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Label",
+    "_name": "lblNo",
     "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
@@ -1540,6 +1540,7 @@
       "__id__": 0
     },
     "fileId": "c46/YsCPVOJYA4mWEpNYRx",
-    "instance": null
+    "instance": null,
+    "targetOverrides": null
   }
 ]

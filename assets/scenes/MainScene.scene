@@ -134,7 +134,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Camera",
+    "_name": "camera",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1409,7 +1409,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Label",
+    "_name": "label",
     "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
@@ -1680,7 +1680,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PreviewPopup",
+    "_name": "previewPopup",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1735,7 +1735,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Mask",
+    "_name": "mask",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1877,7 +1877,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "BigImage",
+    "_name": "bigImage",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -2041,7 +2041,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Label",
+    "_name": "label",
     "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {

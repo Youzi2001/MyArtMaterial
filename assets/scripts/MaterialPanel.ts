@@ -72,7 +72,7 @@ export class MaterialPanel extends Component {
      * 绑定到 Button 的Click Events 中
      * 模拟点击上传按钮
      */
-    onBtnUpLoadClick() {
+    onBtnUploadClick() {
         console.log("点击了上传按钮");
 
         // 2.模拟上传成功：往数据数组里加一个新路径
