@@ -1675,7 +1675,7 @@
     },
     "component": "",
     "_componentId": "0eae2488VJMLKfvvJ6XH14w",
-    "handler": "onBtnUpLoadClick",
+    "handler": "onBtnUploadClick",
     "customEventData": ""
   },
   {
@@ -2428,7 +2428,7 @@
       "__uuid__": "275eccc2-5756-4cf6-94b1-92167b6db001",
       "__expectedType__": "cc.Prefab"
     },
-    "_id": "42jjaB3VNHNLmlBtzjLnsQ"
+    "_id": "9chA/SiPhHm5rHdNhodJX2"
   },
   {
     "__type__": "cc.SceneGlobals",

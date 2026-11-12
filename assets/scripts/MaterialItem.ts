@@ -1,3 +1,11 @@
+/**
+ * 是一个通用列表项（通用零件：只做“通用的事”，不做“具体的事”）
+ * 只负责：
+ * 1、显示图片
+ * 2、被点击时，通知外面
+ * 3、被长按
+ */
+
 // 接收路径，显示图片
 import { _decorator, Component, Node, Sprite, resources, SpriteFrame, Button } from 'cc';
 const { ccclass, property } = _decorator;
@@ -14,7 +22,7 @@ export class MaterialItem extends Component {
     private currentIndex: number = -1; // 记录在列表中的位置
 
 
-    private onClickCallback: (path: string) => void = null;
+    private onClickCallback: (path: string) => void = null;     // 定义：一个“接收path参数，没有返回值”的函数
     private onLongPressCallback: (index: number) => void = null; // 长按回调
 
 
@@ -25,13 +33,13 @@ export class MaterialItem extends Component {
 
 
 
-    // ================== 注入方法 ========================
+    //================== 注入方法 ========================
 
     /** 外部注入：设置这一项对应的资源路径 */
-    public setPath(path: string) {
-        this.currentPath = path;
-        console.log('【Item 设置路径】', path); //调试用
-    }
+    // public setPath(path: string) {
+    //     this.currentPath = path;
+    //     console.log('【Item 设置路径】', path); //调试用
+    // }
 
 
     public setIndex(index: number) {
@@ -118,14 +126,13 @@ export class MaterialItem extends Component {
 
 
 
-
-
-
     /**
      * 外部调用此方法设置图片
      * @param path 相对 resources 目录的路径，不含扩展名
      */
     public setMaterial(path: string) {
+        this.currentPath = path;
+        console.log('【Item 设置路径】', path); //调试用
         // 动态加载图片,用 resources.load 加载，显式指定 SpriteFrame 类型
         resources.load(path, SpriteFrame, (err, spriteFrame) => {
             if (err) {

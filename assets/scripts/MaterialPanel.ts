@@ -68,6 +68,7 @@ export class MaterialPanel extends Component {
         }
     }
 
+
     /**
      * 绑定到 Button 的Click Events 中
      * 模拟点击上传按钮
@@ -112,12 +113,11 @@ export class MaterialPanel extends Component {
                 // 注入路径和索引
                 itemComp.setMaterial(path);
                 itemComp.setIndex(i);
-                itemComp.setPath(path);
+                //itemComp.setPath(path);
                 // 注入点击回调
                 itemComp.setClickCallback(this.showPreview.bind(this));
                 // 注入长按回调
                 itemComp.setLongPressCallback(this.onItemLongPress.bind(this));
-            
             }
 
             // 添加到 Content 节点下，Layout会自动处理位置
@@ -184,9 +184,6 @@ export class MaterialPanel extends Component {
         // 刷新列表
         this.refreshListView();
     }
-
-
-
 }
 
 
