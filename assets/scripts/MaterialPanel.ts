@@ -6,7 +6,7 @@
 3、视图层：遍历数组 → 动态实例化预制体（Item）→ 设置图片 → 放入ScrollView的Content节点下
 */
 
-import { _decorator, SpriteFrame, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
+import { _decorator, director, SpriteFrame, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
 import { ConfirmDialog } from './ConfirmDialog';
 const { ccclass, property } = _decorator;
@@ -84,6 +84,7 @@ export class MaterialPanel extends Component {
         //3.刷新界面
         this.refreshListView();
     }
+
 
     /**
      * 更新数据模型
