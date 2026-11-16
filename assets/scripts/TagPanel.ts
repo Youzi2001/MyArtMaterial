@@ -4,7 +4,9 @@
  * 只做点击新建标签、展示、长按删除
  */
 
-import { _decorator, Component, Node, Prefab, Content, Button, EditBox } from 'cc';
+import { _decorator, Component, Node, find, Prefab, Content, Button, EditBox, instantiate } from 'cc';
+import { ConfirmDialog } from './ConfirmDialog';
+import { TagItem } from './MaterialItem'; 
 const { ccclass, property } = _decorator;
 
 @ccclass('TagPanel')
@@ -151,7 +153,7 @@ export class TagPanel extends Component {
     }
 
     onClickYes() {
-        const tagLabel = this.editBox.label;
+        const tagLabel = this.editBox.string;
         console.log('【新建标签名称】', tagLabel);
         if(tagLabel) {
             this.addTagToData(tagLabel);
