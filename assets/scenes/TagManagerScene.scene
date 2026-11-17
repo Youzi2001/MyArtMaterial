@@ -1393,7 +1393,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "btnCreatTag",
+    "_name": "btnCreateTag",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1714,12 +1714,12 @@
     },
     "component": "",
     "_componentId": "5bda85wRK9OT66C4Si1jbu6",
-    "handler": "onBtnCreatClick",
+    "handler": "onBtnCreateClick",
     "customEventData": ""
   },
   {
     "__type__": "cc.Node",
-    "_name": "creatPopup",
+    "_name": "createPopup",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1733,7 +1733,7 @@
         "__id__": 59
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 94
@@ -3467,31 +3467,31 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "itemPrefab": {
+    "prefabTagItem": {
       "__uuid__": "d8df7ebd-27fb-4361-b2f8-f2d7cbb3807f",
+      "__expectedType__": "cc.Prefab"
+    },
+    "prefabConfirmDialog": {
+      "__uuid__": "275eccc2-5756-4cf6-94b1-92167b6db001",
       "__expectedType__": "cc.Prefab"
     },
     "contentNode": {
       "__id__": 32
     },
-    "btnCreat": {
-      "__id__": 52
-    },
-    "confirmDialogPrefab": {
-      "__uuid__": "275eccc2-5756-4cf6-94b1-92167b6db001",
-      "__expectedType__": "cc.Prefab"
-    },
-    "creatPopup": {
+    "createPopup": {
       "__id__": 54
     },
-    "editBox": {
-      "__id__": 88
+    "btnCreate": {
+      "__id__": 52
     },
     "btnYes": {
       "__id__": 69
     },
     "btnNo": {
       "__id__": 77
+    },
+    "editBox": {
+      "__id__": 88
     },
     "lblWarn": {
       "__id__": 91

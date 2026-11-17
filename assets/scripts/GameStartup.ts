@@ -1,5 +1,5 @@
 import { _decorator, Component } from 'cc';
-import { StorageManager } from './StorageManager';
+import { StorageManager } from './common/StorageManager';
 const { ccclass } = _decorator;
 
 @ccclass('GameStartup')

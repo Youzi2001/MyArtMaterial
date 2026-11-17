@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Button, Label } from 'cc';
-import { ScenenManager } from './ScenenManager';
+import { SceneManager } from './SceneManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('JumpButton')
@@ -25,9 +25,9 @@ export class JumpButton extends Component {
 
     onClick() {
         if (this.isBackButton) {
-            ScenenManager.goBack();
+            SceneManager.goBack();
         } else {
-            ScenenManager.goTo(this.targetScene);
+            SceneManager.goTo(this.targetScene);
         }
     }
 }

@@ -8,7 +8,7 @@
 
 import { _decorator, director, SpriteFrame, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
-import { ConfirmDialog } from './ConfirmDialog';
+import { ConfirmDialog } from '../common/ConfirmDialog';
 const { ccclass, property } = _decorator;
 
 @ccclass('MaterialPanel')
