@@ -54,6 +54,7 @@ export class TagItem extends Component {
         this.node.off(Node.EventType.TOUCH_START,this.onTouchStart,this);
         this.node.off(Node.EventType.TOUCH_END,this.onTouchStart,this);
         this.node.off(Node.EventType.TOUCH_CANCEL,this.onTouchCancel,this);
+        this.clearTime();
      }
 
     // =========================触摸事件================================
@@ -71,7 +72,7 @@ export class TagItem extends Component {
             this.isLongPress = true;
             console.log('【长按触发】index=', this.currentIndex);
             if (this.onLongPressCallback) {
-                this.onLongPressCallback(this.currenIndex);
+                this.onLongPressCallback(this.currentIndex);
             }
         },this.LONG_PRESS_TIME * 1000);
     }
@@ -83,6 +84,8 @@ export class TagItem extends Component {
             this.isLongPress = false;
             console.log('【长按结束，不触发点击】');
             return;
+        } else {
+            console.log('没达到长按时间');
         }
     }
 
@@ -93,7 +96,7 @@ export class TagItem extends Component {
 
     private clearTime() {
         if (this.LongPressTimer) {
-            clearTime(this.LongPressTimer); // 这个不知道是什么作用
+            clearTimeout(this.LongPressTimer); // 这个不知道是什么作用
             this.LongPressTimer = 0;
         }
     }
@@ -105,7 +108,7 @@ export class TagItem extends Component {
     public setTag(label: string) {
         this.currentLabel = label;
         console.log('【Item】设置文本', label);
-        this.lblTag.label = label;
+        this.lblTag.string = label;
     }
 
 }

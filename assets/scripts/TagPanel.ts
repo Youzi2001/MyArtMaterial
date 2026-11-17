@@ -4,9 +4,9 @@
  * 只做点击新建标签、展示、长按删除
  */
 
-import { _decorator, Component, Node, find, Prefab, Content, Button, EditBox, instantiate } from 'cc';
+import { _decorator, Component, Node, find, Prefab, Content, Button, EditBox, instantiate, Label } from 'cc';
 import { ConfirmDialog } from './ConfirmDialog';
-import { TagItem } from './MaterialItem'; 
+import { TagItem } from './TagItem'; 
 const { ccclass, property } = _decorator;
 
 @ccclass('TagPanel')
@@ -42,6 +42,9 @@ export class TagPanel extends Component {
 
     @property(Button)
     btnNo: Button = null;
+
+    @property(Label)
+    lblWarn: Label = null;
 
 
     private confirmDialogNode: Node = null;
@@ -148,20 +151,25 @@ export class TagPanel extends Component {
 
         // 显示新建弹窗
         this.creatPopup.active = true;
-        // 用户点击确认时，获取输入框中的文本 => 需要先初始化输入框
-
+        this.lblWarn.string = '';
+        this.editBox.string = ''; 
     }
 
     onClickYes() {
         const tagLabel = this.editBox.string;
         console.log('【新建标签名称】', tagLabel);
-        if(tagLabel) {
+        if(this.tagList.includes(tagLabel)) {
+            this.lblWarn.string = '新建标签失败，该标签已存在！';
+        } else if (tagLabel) {
             this.addTagToData(tagLabel);
             this.refreshListView();
+            this.editBox.string = '';   // 清空输入框
+            this.creatPopup.active = false;
         } else {
+            this.lblWarn.string = '新建标签失败，标签名称不可为空！';
             console.log('新建标签失败');
         }
-        this.creatPopup.active = false;
+        
     }
 
     onClickNo() {
