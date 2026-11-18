@@ -138,39 +138,64 @@ export class TagPanel extends Component {
     }
 
 
-    // ============================新建标签=============================
-    /** 点击新建按钮 */
-    onBtnCreateClick() {
-        console.log('新建标签');
+    // ============================新建标签弹窗=============================
+    /** 收拢弹窗操作，封装统一开关方法 */
+    /** 打开新建弹窗，自动重置输入状态 */
+    private openCreatePopup() {
         this.createPopup.active = true;
         this.lblWarn.string = '';
         this.editBox.string = ''; 
     }
 
+    /** 关闭新建弹窗，自动清空输入 */
+    private closeCreatePopup() {
+        this.lblWarn.string = '';
+        this.editBox.string = '';
+        this.createPopup.active = false;
+    }
+
+
+
+    /** 抽离独立校验方法，逻辑完全解耦 */
+    /** 把标签名校验单独拎出来，后需要加新规则（比如标签长度限制、特殊字符拦截）时，可以直接往这个方法里加 */
+    /** 点击新建按钮 */
+    private validateTagName(name: string): string | null {
+        if (!name) {
+            return '新建标签失败，标签名称不可为空！';
+        }
+        if (this.tagList.includes(name)) {
+            return '新建标签失败，该标签已存在！';
+        }
+        // 后续新增校验规则直接在这里加，比如长度限制、特殊字符拦截
+        return null;
+    }
+
+
+
+
+    /** 简化按钮回调，只做流程串联 */
+    /** 点击新建按钮 */
+    onBtnCreateClick() {
+        this.openCreatePopup();
+    }
+
     /** 弹窗确认 */
     onClickYes() {
         const tagLabel = this.editBox.string.trim();    // .trim()拦截全是空格的无效输入
-        if (!tagLabel) {
-            this.lblWarn.string = '新建标签失败，标签名称不可为空！';
+        const errMsg = this.validateTagName(tagLabel);
+        if (errMsg) {
+            this.lblWarn.string = errMsg;
             return;
         }
-
-
-        if(this.tagList.includes(tagLabel)) {
-            this.lblWarn.string = '新建标签失败，该标签已存在！';
-            return;
-        } 
-        
         this.addTagToData(tagLabel);
         this.refreshListView();
-        this.editBox.string = '';
-        this.createPopup.active = false;
-        
+        this.closeCreatePopup();  
     }
+
 
     /** 弹窗取消 */
     onClickNo() {
-        this.createPopup.active = false;
+        this.closeCreatePopup();
     }
 
 
