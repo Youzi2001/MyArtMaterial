@@ -8,6 +8,7 @@
 
 import { _decorator, Component, Node, find, Prefab, Content, Button, EditBox, instantiate, Label } from 'cc';
 import { ConfirmDialog } from '../common/ConfirmDialog';
+import { StorageManager } from '../common/StorageManager';
 import { TagItem } from './TagItem'; 
 const { ccclass, property } = _decorator;
 
@@ -54,6 +55,8 @@ export class TagPanel extends Component {
 
     // =============================生命周期============================
     onLoad() {
+        const allData = StorageManager.inst.getObj('allData', {});
+        this.tagList = allData.tagList || [];
         this.createPopup.active = false;
         
         // 预先实例化弹窗
@@ -78,10 +81,12 @@ export class TagPanel extends Component {
     private refreshListView() {
         // 清空当前列表显示
         this.contentNode.removeAllChildren();
-
         // 遍历数据列表，创建对应的item
         for (let i = 0; i < this.tagList.length; i++) {
-            const label = this.tagList[i];
+            const tag = this.tagList[i];
+            const label = tag.name;
+            console.log("开始加载",label);
+            
 
             // 实例化预制体
             const newItem = instantiate(this.prefabTagItem);

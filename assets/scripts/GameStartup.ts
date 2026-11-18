@@ -11,7 +11,11 @@ export class GameStartup extends Component {
         // 首次写入测试数据
         const testData = {
             materialList:[{id:1, name:'测试素材'}],
-            tagList:[],
+            tagList:[
+                { id:1, name:'风景'},
+                { id:2, name:'人物'},
+                { id:3, name:'建筑'}
+            ],
             themeList:[],
             artworkList:[]
         };
