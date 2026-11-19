@@ -1,5 +1,6 @@
 import { _decorator, Component } from 'cc';
 import { StorageManager } from './common/StorageManager';
+import { AllData, STORAGE_KEY, createDefaultData } from './common/DataTypes';
 const { ccclass } = _decorator;
 
 @ccclass('GameStartup')
@@ -8,31 +9,20 @@ export class GameStartup extends Component {
         
         console.log('————脚本已开始执行————');
 
-        // 首次写入测试数据
-        const testData = {
-            materialList:[{id:1, name:'测试素材'}],
-            tagList:[
+        const testData: AllData = createDefaultData();
+        testData.tagList = [
                 { id:1, name:'风景'},
                 { id:2, name:'人物'},
                 { id:3, name:'建筑'}
-            ],
-            themeList:[],
-            artworkList:[]
-        };
+            ];
+        testData.nextIds.tag = 4;
 
-        StorageManager.inst.setObj('allData', testData);
-        console.log('【导入成功】已存入测试数据');
+        testData.materialList = [
+            { id:1, name: 'textures/bag/spriteFrame'}
+        ];
+        testData.nextIds.material = 2;
 
-
-        // const defaultData = {
-        //     materialList: [],
-        //     tagList: [],
-        //     themeList: [],
-        //     artworkList: []
-        // };
-
-        const result = StorageManager.inst.getObj('allData',{});
-        console.log('【读取结果】：', JSON.stringify(result));
+        StorageManager.inst.setObj(STORAGE_KEY, testData);
     }
 }
 

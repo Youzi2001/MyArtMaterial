@@ -10,6 +10,7 @@ import { _decorator, Component, Node, find, Prefab, Content, Button, EditBox, in
 import { ConfirmDialog } from '../common/ConfirmDialog';
 import { StorageManager } from '../common/StorageManager';
 import { TagItem } from './TagItem'; 
+import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
 const { ccclass, property } = _decorator;
 
 @ccclass('TagPanel')
@@ -46,7 +47,7 @@ export class TagPanel extends Component {
 
 
     // =============================内部数据==============================
-    private tagList: string[] = [];                     // 标签数据
+    private tagList: TagData[] = [];                     // 标签数据
     private confirmDialogNode: Node = null;             // 弹窗节点（缓存复用）
     private confirmDialogComp: ConfirmDialog = null;    // 弹窗脚本组件
 
@@ -55,7 +56,7 @@ export class TagPanel extends Component {
 
     // =============================生命周期============================
     onLoad() {
-        const allData = StorageManager.inst.getObj('allData', {});
+        const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
         this.tagList = allData.tagList || [];
         this.createPopup.active = false;
         
@@ -206,8 +207,18 @@ export class TagPanel extends Component {
 
     // ======================工具方法========================
     /** 添加标签到数据列表 */
-    private addTagToData(tag:string){
-        this.tagList.push(tag);
+    private addTagToData(tagName:string){ 
+        const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
+        const newTag: TagData = {
+            id: allData.nextIds.tag,
+            name: tagName
+        };
+        allData.nextIds.tag += 1;
+        allData.tagList.push(newTag);
+
+        StorageManager.inst.setObj(STORAGE_KEY,allData);
+
+        this.tagList.push(newTag);
     }
 
 }

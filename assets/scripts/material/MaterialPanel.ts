@@ -9,6 +9,8 @@
 import { _decorator, director, SpriteFrame, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
 import { ConfirmDialog } from '../common/ConfirmDialog';
+import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
+import { StorageManager } from '../common/StorageManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('MaterialPanel')
@@ -39,6 +41,10 @@ export class MaterialPanel extends Component {
     private materialList: string[] = [];
 
     onLoad(){
+        const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
+        this.materialList = allData.materialList || [];
+        console.log(this.materialList);
+
         // 关闭按钮监听
         this.btnClose.node.on(Button.EventType.CLICK, this.hidePreview,this);
 
@@ -52,8 +58,6 @@ export class MaterialPanel extends Component {
             console.warn("Content节点缺少Layout组件");
         }
 
-        // 初始加载一些假数据测试
-        //this.addMaterialToData("textures/default_material/spriteFrame");
         this.refreshListView();
 
 
@@ -75,11 +79,21 @@ export class MaterialPanel extends Component {
      */
     onBtnUploadClick() {
         console.log("点击了上传按钮");
-
         // 2.模拟上传成功：往数据数组里加一个新路径
         // 实际项目中这里会是网络请求回调
         const newMaterialPath = "textures/bag/spriteFrame"; // 这里用同一张图测试，实际可以是不同路径
-        this.addMaterialToData(newMaterialPath);
+
+        const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
+        const newMaterial : MaterialData = {
+            id: allData.nextIds.material,
+            name: newMaterialPath
+        };
+        allData.nextIds.material += 1;
+        allData.materialList.push(newMaterial);
+
+        StorageManager.inst.setObj(STORAGE_KEY, allData);
+
+        this.addMaterialToData(newMaterial);
         console.log("当前素材数据列表：", this.materialList);
         //3.刷新界面
         this.refreshListView();
@@ -100,10 +114,12 @@ export class MaterialPanel extends Component {
     private refreshListView() {
         // A.清空当前列表显示
         this.contentNode.removeAllChildren();
-
+        console.log(this.materialList);
         //B.遍历数据，创建对应的Item
         for (let i = 0; i < this.materialList.length; i++) {
-            const path = this.materialList[i];
+            const material = this.materialList[i];
+            const path = material.name;
+            console.log(path);
 
             // 实例化预制体
             const newItem = instantiate(this.itemPrefab);
