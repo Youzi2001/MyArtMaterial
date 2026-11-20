@@ -8,6 +8,7 @@
 
 import { _decorator, director,SpriteFrame, UITransform, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
+import { MaterialDetailPage } from './MaterialDetailPage'; 
 import { ConfirmDialog } from '../common/ConfirmDialog';
 import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
 import { StorageManager } from '../common/StorageManager';
@@ -17,6 +18,9 @@ const { ccclass, property } = _decorator;
 export class MaterialPanel extends Component {
     @property(Prefab)
     itemPrefab: Prefab = null; // 绑定 MaterialItem.prefab
+
+    @property(Prefab)
+    MaterialDetailPagePrefab: Prefab = null;
 
     @property(Node)
     contentNode: Node = null; // 绑定 ScrollView 下的 content 节点
@@ -39,6 +43,11 @@ export class MaterialPanel extends Component {
     @property(Prefab)
     confirmDialogPrefab: Prefab = null;
 
+    @property(Node)
+    materialDetailPanel: Node = null;
+
+    @property(Node)
+    materialDetailPanelContent: Node = null;
 
     private confirmDialogNode: Node = null;
     private confirmDialogComp: ConfirmDialog = null;
@@ -61,6 +70,7 @@ export class MaterialPanel extends Component {
 
         // 弹窗默认隐藏
         this.previewPopup.active = false;
+        this.materialDetailPanel.active = false;
         this.refreshListView();
 
 
@@ -175,7 +185,8 @@ export class MaterialPanel extends Component {
                 itemComp.setIndex(i);
                 //itemComp.setPath(path);
                 // 注入点击回调
-                itemComp.setClickCallback(this.showPreview.bind(this));
+                //itemComp.setClickCallback(this.showPreview.bind(this));
+                itemComp.setClickCallback(this.showMaterialDetailPage.bind(this));
                 // 注入长按回调
                 itemComp.setLongPressCallback(this.onItemLongPress.bind(this));
             }
@@ -210,6 +221,24 @@ export class MaterialPanel extends Component {
     }
 
 
+    /** 打开素材详情页 */
+    private showMaterialDetailPage(index: number) {
+        const material = this.materialList[index];
+        const path = material.name;
+        const ratio = material.height / material.width;
+        const displayWidth = 600;
+        const displayHeight = displayWidth * ratio;
+
+        this.materialDetailPanel.active = true;
+        this.materialDetailPanelContent.removeAllChildren()
+        const maDetailPage = instantiate(this.MaterialDetailPagePrefab);
+        const maDetailPageComp = maDetailPage.getComponent(MaterialDetailPage);
+        if (maDetailPageComp) {
+            maDetailPageComp.setDetailPageImage(path,displayWidth,displayHeight);
+        }
+        this.materialDetailPanelContent.addChild(maDetailPage);
+    }
+
     private onItemLongPress(index: number) {
         console.log('【Panel收到长按】 index=', index);
 
@@ -233,6 +262,9 @@ export class MaterialPanel extends Component {
         )
     }
 
+    private hideDetailPage() {
+        this.materialDetailPanel.active = false;
+    }
 
     /** 删除指定索引的素材 */
     private deleteMaterial(index: number) {

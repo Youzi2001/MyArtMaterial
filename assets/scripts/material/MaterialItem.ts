@@ -104,7 +104,7 @@ export class MaterialItem extends Component {
 
         // 短按 → 触发点击
         if (this.onClickCallback) {
-            this.onClickCallback(this.currentPath);
+            this.onClickCallback(this.currentIndex);
         }
     }
 
