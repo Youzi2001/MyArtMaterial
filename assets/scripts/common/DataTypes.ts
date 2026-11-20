@@ -4,6 +4,8 @@ export interface MaterialData {
     fileName: string;
     tags: number[];
     createTime: number;
+    width: number;
+    height: number;
 }
 
 /** 标签数据 */

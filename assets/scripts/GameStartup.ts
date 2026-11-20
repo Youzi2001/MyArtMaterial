@@ -18,9 +18,10 @@ export class GameStartup extends Component {
         testData.nextIds.tag = 4;
 
         testData.materialList = [
-            { id:1, name: 'textures/bag/spriteFrame'}
+            { id:1, name: 'textures/bag/spriteFrame',width:579, height: 562},
+            { id:2, name: 'textures/default_material/spriteFrame',width:1590, height: 468}
         ];
-        testData.nextIds.material = 2;
+        testData.nextIds.material = 3;
 
         StorageManager.inst.setObj(STORAGE_KEY, testData);
     }
