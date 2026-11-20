@@ -6,7 +6,7 @@
 3、视图层：遍历数组 → 动态实例化预制体（Item）→ 设置图片 → 放入ScrollView的Content节点下
 */
 
-import { _decorator, director,SpriteFrame, UITransform, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
+import { _decorator,PageView, director,SpriteFrame, UITransform, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { MaterialItem } from './MaterialItem'; // 引入刚才写的Item脚本
 import { MaterialDetailPage } from './MaterialDetailPage'; 
 import { ConfirmDialog } from '../common/ConfirmDialog';
@@ -46,8 +46,8 @@ export class MaterialPanel extends Component {
     @property(Node)
     materialDetailPanel: Node = null;
 
-    @property(Node)
-    materialDetailPanelContent: Node = null;
+    @property(PageView)
+    pageView: PageView = null;
 
     private confirmDialogNode: Node = null;
     private confirmDialogComp: ConfirmDialog = null;
@@ -223,20 +223,26 @@ export class MaterialPanel extends Component {
 
     /** 打开素材详情页 */
     private showMaterialDetailPage(index: number) {
-        const material = this.materialList[index];
-        const path = material.name;
-        const ratio = material.height / material.width;
-        const displayWidth = 600;
-        const displayHeight = displayWidth * ratio;
 
         this.materialDetailPanel.active = true;
-        this.materialDetailPanelContent.removeAllChildren()
-        const maDetailPage = instantiate(this.MaterialDetailPagePrefab);
-        const maDetailPageComp = maDetailPage.getComponent(MaterialDetailPage);
-        if (maDetailPageComp) {
-            maDetailPageComp.setDetailPageImage(path,displayWidth,displayHeight);
+        this.pageView.removeAllPages();
+
+        for (let i=0; i<this.materialList.length; i++) {
+            const material = this.materialList[i];
+            const path = material.name;
+            const ratio = material.height / material.width;
+            const displayWidth = 600;
+            const displayHeight = displayWidth * ratio;
+            const maDetailPage = instantiate(this.MaterialDetailPagePrefab);
+            const maDetailPageComp = maDetailPage.getComponent(MaterialDetailPage);
+            if (maDetailPageComp) {
+                maDetailPageComp.setDetailPageImage(path,displayWidth,displayHeight);
+            }
+            this.pageView.addPage(maDetailPage);
         }
-        this.materialDetailPanelContent.addChild(maDetailPage);
+
+        this.pageView.scrollToPage(index,0);
+        
     }
 
     private onItemLongPress(index: number) {
