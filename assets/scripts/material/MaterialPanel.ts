@@ -49,6 +49,9 @@ export class MaterialPanel extends Component {
     @property(PageView)
     pageView: PageView = null;
 
+    @property(Node)
+    drawer: Node = null;
+
     private confirmDialogNode: Node = null;
     private confirmDialogComp: ConfirmDialog = null;
 
@@ -71,6 +74,7 @@ export class MaterialPanel extends Component {
         // 弹窗默认隐藏
         this.previewPopup.active = false;
         this.materialDetailPanel.active = false;
+        this.drawer.active = false;
         this.refreshListView();
 
 
@@ -122,6 +126,12 @@ export class MaterialPanel extends Component {
         });
     }
 
+    /**
+     * 点击编辑标签按钮，打开标签页面
+     */
+    onBtnOpenTagManager() {
+        this.drawer.active = true;
+    }
 
     /**
      * 更新数据模型
@@ -288,6 +298,7 @@ export class MaterialPanel extends Component {
         // 刷新列表
         this.refreshListView();
     }
+
 }
 
 
