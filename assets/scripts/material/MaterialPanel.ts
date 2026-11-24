@@ -127,13 +127,6 @@ export class MaterialPanel extends Component {
     }
 
     /**
-     * 点击编辑标签按钮，打开标签页面
-     */
-    onBtnOpenTagManager() {
-        this.drawer.active = true;
-    }
-
-    /**
      * 更新数据模型
      */
     private addMaterialToData(path: string) {
