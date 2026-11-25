@@ -1,10 +1,14 @@
-import { _decorator, Component, Node, EventTouch,UITransform, tween, Vec3 } from 'cc';
+import { _decorator, Component, Node, instantiate, Sprite, Color, Label, Layout, EventTouch,UITransform, tween, Vec3, Prefab } from 'cc';
 import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
 import { StorageManager } from '../common/StorageManager';
+import { TagItem, TagSize } from './TagItem';
 const { ccclass, property } = _decorator;
 
 @ccclass('TagEditPage')
 export class TagEditPage extends Component {
+    @property(Prefab)
+    tagItemPrefab: Prefab = null;
+
     @property(Node)
     panel: Node = null;
 
@@ -15,7 +19,7 @@ export class TagEditPage extends Component {
     top: Node = null;
 
     @property(Node)
-    allTagList: Node = null;
+    allTagListNode: Node = null;
 
     private topHeight: number = 0;
 
@@ -30,6 +34,7 @@ export class TagEditPage extends Component {
     onLoad() {
         const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
         this.allTagList = allData.tagList || [];
+        console.log("已有标签列表：",this.allTagList);
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.topHeight = this.top.getComponent(UITransform).height;
 
@@ -37,6 +42,7 @@ export class TagEditPage extends Component {
         this.panel.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.panel.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.panel.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        this.refreshAllTagListView();
     }
 
     //1.手指按下：记下起点
@@ -119,8 +125,29 @@ export class TagEditPage extends Component {
     }
 
     private refreshAllTagListView() {
-        this.allTagList.removeAllChildren();
-    }
+        this.allTagListNode.removeAllChildren();
+        for (let i = 0; i < this.allTagList.length; i ++) {
+            const tag = this.allTagList[i];
+            const tagText = tag.name;
+
+            const newItem = instantiate(this.tagItemPrefab);
+            const itemComp = newItem.getComponent(TagItem);
+            if (itemComp) {
+                itemComp.setTag(tagText, {size: TagSize.LARGE, selected:false, showBorder: true});
+            }
+            this.allTagListNode.addChild(newItem);
+        }
+
+        this.scheduleOnce(() => {
+            const parent = this.allTagListNode.parent;
+            if (parent) {
+                const layout = parent.getComponent(Layout);
+                if (layout) {
+                    layout.updateLayout();
+                }
+            }
+        }, 0);
+        }
 }
 
 

@@ -166,9 +166,9 @@ export class TagItem extends Component {
         }
     }
 
-    start() {
-        this.setTag("风景", {size: TagSize.LARGE, selected:true, showBorder: true});
-    }
+    // start() {
+    //     this.setTag("风景", {size: TagSize.LARGE, selected:true, showBorder: true});
+    // }
 
 }
 
