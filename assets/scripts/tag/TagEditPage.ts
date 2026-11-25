@@ -1,4 +1,6 @@
 import { _decorator, Component, Node, EventTouch,UITransform, tween, Vec3 } from 'cc';
+import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
+import { StorageManager } from '../common/StorageManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('TagEditPage')
@@ -12,6 +14,9 @@ export class TagEditPage extends Component {
     @property(Node)
     top: Node = null;
 
+    @property(Node)
+    allTagList: Node = null;
+
     private topHeight: number = 0;
 
     private startTouchY: number = 0;    //手指按下时的y
@@ -20,7 +25,11 @@ export class TagEditPage extends Component {
 
     private isDragging: boolean = false;
 
+    private allTagList: stirng[] = [];
+
     onLoad() {
+        const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
+        this.allTagList = allData.tagList || [];
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.topHeight = this.top.getComponent(UITransform).height;
 
@@ -107,6 +116,10 @@ export class TagEditPage extends Component {
 
     public closePanel() {
         this.drawer.active = false;
+    }
+
+    private refreshAllTagListView() {
+        this.allTagList.removeAllChildren();
     }
 }
 
