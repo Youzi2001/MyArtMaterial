@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, instantiate, Sprite, Color, Label, Layout, EventTouch,UITransform, tween, Vec3, Prefab } from 'cc';
 import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
 import { StorageManager } from '../common/StorageManager';
+import { FlowLayout } from '../common/FlowLayout';
 import { TagItem, TagSize } from './TagItem';
 const { ccclass, property } = _decorator;
 
@@ -8,6 +9,9 @@ const { ccclass, property } = _decorator;
 export class TagEditPage extends Component {
     @property(Prefab)
     tagItemPrefab: Prefab = null;
+
+    @property(Prefab)
+    btnAddTagPrefab: Prefab = null;
 
     @property(Node)
     panel: Node = null;
@@ -29,7 +33,7 @@ export class TagEditPage extends Component {
 
     private isDragging: boolean = false;
 
-    private allTagList: stirng[] = [];
+    private allTagList: string[] = [];
 
     onLoad() {
         const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
@@ -37,12 +41,13 @@ export class TagEditPage extends Component {
         console.log("已有标签列表：",this.allTagList);
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.topHeight = this.top.getComponent(UITransform).height;
+        this.refreshAllTagListView();
 
         this.panel.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.panel.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.panel.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.panel.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
-        this.refreshAllTagListView();
+        
     }
 
     //1.手指按下：记下起点
@@ -114,6 +119,9 @@ export class TagEditPage extends Component {
 
     public openPanel() {
         this.drawer.active = true;
+        this.refreshAllTagListView();
+
+        this.panelHeight = this.panel.getComponent(UITransform).height;
         this.panel.setPosition(0, -this.panelHeight, 0);
         tween(this.panel)
             .to(0.25, { position: new Vec3(0,-40,0) }, { easing: 'quadOut' })
@@ -122,6 +130,7 @@ export class TagEditPage extends Component {
 
     public closePanel() {
         this.drawer.active = false;
+        this.panel.setPosition(0,-this.panelHeight,0);
     }
 
     private refreshAllTagListView() {
@@ -138,13 +147,14 @@ export class TagEditPage extends Component {
             this.allTagListNode.addChild(newItem);
         }
 
+        const btnAddTagNode = instantiate(this.btnAddTagPrefab); 
+        this.allTagListNode.addChild(btnAddTagNode);
+
+        // 等一帧，让tagitem的尺寸计算完
         this.scheduleOnce(() => {
-            const parent = this.allTagListNode.parent;
-            if (parent) {
-                const layout = parent.getComponent(Layout);
-                if (layout) {
-                    layout.updateLayout();
-                }
+            const flowLayout = this.allTagListNode.getComponent(FlowLayout);
+            if (flowLayout) {
+                flowLayout.updateLayout();
             }
         }, 0);
         }
