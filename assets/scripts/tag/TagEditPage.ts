@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, instantiate, Sprite, Color, Label, Layout, EventTouch,UITransform, tween, Vec3, Prefab } from 'cc';
+import { _decorator, Component, Node, instantiate, Sprite,Button, Color, Label, Layout, EventTouch,UITransform, tween, Vec3, Prefab } from 'cc';
 import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
 import { StorageManager } from '../common/StorageManager';
 import { FlowLayout } from '../common/FlowLayout';
@@ -31,6 +31,9 @@ export class TagEditPage extends Component {
     @property(Label)
     lblNotag: Label = null;
 
+    @property(Button)
+    btnCorrect: Button = null;
+
     private topHeight: number = 0;
 
     private startTouchY: number = 0;    //手指按下时的y
@@ -38,6 +41,7 @@ export class TagEditPage extends Component {
     private panelHeight: number = 0;
 
     private isDragging: boolean = false;
+    private isCorrect: boolean = false;
 
     private allTagList: string[] = [];
     private selectedTagLsit: string[] = [];
@@ -107,6 +111,7 @@ export class TagEditPage extends Component {
             .to(0.25, { position: new Vec3(0, targetY, 0)}, { easing: 'quadOut'})
             .call(() => {
                 if (targetY == closeY) {
+                    this.isCorrect = false;
                     this.closePanel();
                 }
             })
@@ -127,9 +132,15 @@ export class TagEditPage extends Component {
             && localPos.y >= -h * ay && localPos.y <= h * (1-ay);
     }
 
+    public onBtnCorrect() {
+        this.isCorrect = true;
+        this.closePanel();
+    }
+
     public openPanel() {
         this.drawer.active = true;
         this.refreshAllTagListView();
+        this.refreshSelectedTagListView();
 
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.panel.setPosition(0, -this.panelHeight, 0);
@@ -141,6 +152,9 @@ export class TagEditPage extends Component {
     public closePanel() {
         this.drawer.active = false;
         this.panel.setPosition(0,-this.panelHeight,0);
+        if (!this.isCorrect) {
+            this.selectedTagLsit = [];
+        }
     }
 
     private refreshAllTagListView() {
