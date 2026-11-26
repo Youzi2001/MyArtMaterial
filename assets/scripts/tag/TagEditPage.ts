@@ -25,6 +25,12 @@ export class TagEditPage extends Component {
     @property(Node)
     allTagListNode: Node = null;
 
+    @property(Node)
+    selectedTagListNode: Node = null;
+
+    @property(Label)
+    lblNotag: Label = null;
+
     private topHeight: number = 0;
 
     private startTouchY: number = 0;    //手指按下时的y
@@ -34,14 +40,18 @@ export class TagEditPage extends Component {
     private isDragging: boolean = false;
 
     private allTagList: string[] = [];
+    private selectedTagLsit: string[] = [];
+
 
     onLoad() {
         const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
         this.allTagList = allData.tagList || [];
+
         console.log("已有标签列表：",this.allTagList);
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.topHeight = this.top.getComponent(UITransform).height;
         this.refreshAllTagListView();
+        this.refreshSelectedTagListView();
 
         this.panel.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.panel.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -142,9 +152,9 @@ export class TagEditPage extends Component {
             const newItem = instantiate(this.tagItemPrefab);
             const itemComp = newItem.getComponent(TagItem);
             if (itemComp) {
-                itemComp.setTag(tagText, {size: TagSize.LARGE, selected:false, showBorder: true});
+                itemComp.setTag(tagText, {size: TagSize.LARGE, selected:false, showBorder: true,hasClosebtn:true});
                 itemComp.setClickCallback((clickedItem: TagItem) => {
-                    this.onTagClicked(clickedItem);
+                    this.changeTagStyle(clickedItem);
                 });
             }
             this.allTagListNode.addChild(newItem);
@@ -160,12 +170,39 @@ export class TagEditPage extends Component {
                 flowLayout.updateLayout();
             }
         }, 0);
-        }
+    }
 
-    private onTagClicked(item:TagItem) {
+    private refreshSelectedTagListView() {
+        if (this.selectedTagLsit.length == 0) {
+            this.lblNotag.node.active = true;
+        } else {
+            this.lblNotag.node.active = false;
+        }
+        this.selectedTagListNode.removeAllChildren();
+        for (let i=0; i<this.selectedTagLsit.length; i++) {
+            const tagText = this.selectedTagLsit[i];
+            const newItem = instantiate(this.tagItemPrefab);
+            const itemComp = newItem.getComponent(TagItem);
+            if (itemComp) {
+                itemComp.setTag(tagText, {size: TagSize.LARGE, selected:true, showBorder: true, showClose:true});
+            }
+            this.selectedTagListNode.addChild(newItem);
+        }
+    }
+
+    private changeTagStyle(item:TagItem) {
         const newSelected = !item.selected;
         item.setSelected(newSelected);
-        console.log('标签被点击：', item.text, '新状态：', newSelected);
+
+        // 如果新状态为true，向已选列表中添加标签，反之，删除标签
+        if (newSelected) {
+            this.selectedTagLsit.push(item.text);
+        } else {
+            const start = this.selectedTagLsit.indexOf(item.text);
+            this.selectedTagLsit.splice(start,1);
+        }
+
+        this.refreshSelectedTagListView();
     }
 }
 

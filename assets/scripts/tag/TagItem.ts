@@ -75,12 +75,16 @@ export class TagItem extends Component {
     @property(Button)
     btnClose: Button = null;
 
+    @property(Label)
+    lblClose: Label = null;
+
     @property(Graphics)
     graphics: Graphics = null;
 
     private size: TagSize = TagSize.LARGE;
     private selected: boolean = false;
     private showBorder: boolean = true;
+    private showClose: boolean = false;
     private text: string = '';
 
     private _clickCallback: tagClickback = null;
@@ -99,11 +103,10 @@ export class TagItem extends Component {
         this.size = config?.size ?? TagSize.LARGE;
         this.selected = config?.selected ?? false;
         this.showBorder = config?.showBorder ?? true;
+        this.showClose = config?.showClose ?? false;
 
         //1.关闭按钮显隐
-        if (this.btnClose) {
-            this.btnClose.node.active = config?.showClose ?? false;
-        }
+        this.setClosebtn(this.showClose);
 
         //2.设文字（会改变Label尺寸）
         this.text = text;
@@ -128,6 +131,11 @@ export class TagItem extends Component {
         this.redraw();
     }
 
+    private setClosebtn(showClose: boolean) {
+        this.showClose = showClose;
+        this.btnClose.node.active = this.showClose;
+    }
+
     /** 应用尺寸档位 */
     private applySizeStyle() {
         const style = STYLE_MAP[this.size];
@@ -143,6 +151,7 @@ export class TagItem extends Component {
 
         // 文字色
         this.lblTag.color = colors.text;
+        this.lblClose.color = colors.text;
 
         // 背景色
         const bg = this.node.getChildByName('bg');
@@ -191,8 +200,6 @@ export class TagItem extends Component {
             this._clickCallback(this);
         }
     }
-
-
 }
 
 
