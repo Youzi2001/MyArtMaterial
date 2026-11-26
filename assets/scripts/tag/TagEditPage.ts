@@ -143,6 +143,9 @@ export class TagEditPage extends Component {
             const itemComp = newItem.getComponent(TagItem);
             if (itemComp) {
                 itemComp.setTag(tagText, {size: TagSize.LARGE, selected:false, showBorder: true});
+                itemComp.setClickCallback((clickedItem: TagItem) => {
+                    this.onTagClicked(clickedItem);
+                });
             }
             this.allTagListNode.addChild(newItem);
         }
@@ -158,6 +161,12 @@ export class TagEditPage extends Component {
             }
         }, 0);
         }
+
+    private onTagClicked(item:TagItem) {
+        const newSelected = !item.selected;
+        item.setSelected(newSelected);
+        console.log('标签被点击：', item.text, '新状态：', newSelected);
+    }
 }
 
 

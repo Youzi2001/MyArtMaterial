@@ -81,6 +81,16 @@ export class TagItem extends Component {
     private size: TagSize = TagSize.LARGE;
     private selected: boolean = false;
     private showBorder: boolean = true;
+    private text: string = '';
+
+    private _clickCallback: tagClickback = null;
+    private tagClickback: (path: string) => void = null;     // 定义点击回调
+
+    //=================== 注入方法 =====================
+    public setClickCallback(cb: tagClickback) {
+        this._clickCallback = cb;
+    }
+
 
     /**
      * 对外统一接口：一次配置所有状态
@@ -96,6 +106,7 @@ export class TagItem extends Component {
         }
 
         //2.设文字（会改变Label尺寸）
+        this.text = text;
         this.lblTag.string = text;
         
         //3.应用尺寸样式（字号、内边距）
@@ -169,6 +180,18 @@ export class TagItem extends Component {
     // start() {
     //     this.setTag("风景", {size: TagSize.LARGE, selected:true, showBorder: true});
     // }
+
+
+    onLoad() {
+        this.lblTag.node.on(Node.EventType.TOUCH_END,this.onClickSelf,this);
+    }
+
+    private onClickSelf() {
+        if (this._clickCallback) {
+            this._clickCallback(this);
+        }
+    }
+
 
 }
 
