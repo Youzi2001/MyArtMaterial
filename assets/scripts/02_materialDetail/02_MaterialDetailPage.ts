@@ -20,7 +20,10 @@ export class MaterialDetailPage extends Component {
 
     private refreshView() {
         if (!this._data) return;
-        this.loadImage(this._data.fileName,this._data.width,this._data.height);
+        const ratio = this._data.height / this._data.width;
+        const displayWidth = 600;
+        const displayHeight = displayWidth * ratio;
+        this.loadImage(this._data.fileName,displayWidth,displayHeight);
     }
 
     private loadImage(path: string, width: number, height:number) {
@@ -30,8 +33,8 @@ export class MaterialDetailPage extends Component {
                 console.error('加载图片失败：', err);
                 return;
             }
-            this.image.spriteFrame = spriteFrame;
-            const imageUI = this.image.getComponent(UITransform);
+            this.SpImage.spriteFrame = spriteFrame;
+            const imageUI = this.SpImage.getComponent(UITransform);
             imageUI.setContentSize(width,height);
         });
     }

@@ -10,6 +10,7 @@ import { _decorator,PageView, director,SpriteFrame, UITransform, Component, Node
 import { AllData, STORAGE_KEY, createDefaultData } from '../00_common/02_DataTypes';
 import { StorageManager } from '../00_common/03_StorageManager';
 import { MaterialItem } from './02_MaterialItem'; // 引入刚才写的Item脚本
+import { MaterialDetailPanel } from '../02_materialDetail/01_MaterialDetailPanel';
 const { ccclass, property } = _decorator;
 
 @ccclass('MaterialPanel')
@@ -34,6 +35,9 @@ export class MaterialPanel extends Component {
 
     @property(Node)
     pageTagEdit: Node = null;               // 标签编辑页根节点
+
+    @property(MaterialDetailPanel)
+    detailPanel: MaterialDetailPanel = null;
 
 
 
@@ -154,10 +158,9 @@ export class MaterialPanel extends Component {
             const itemComp = newItem.getComponent(MaterialItem);
             if (itemComp) {
                 // 注入路径和索引
-                itemComp.setData(material);
+                itemComp.setData(material,i);
                 // 注入点击回调
-                //itemComp.setClickCallback(this.showPreview.bind(this));
-                //itemComp.setClickCallback(this.showMaterialDetailPage.bind(this));
+                itemComp.setClickCallback(this.openMaterialDetailPage.bind(this));
             }
 
             //5、加到目标列
@@ -172,8 +175,10 @@ export class MaterialPanel extends Component {
     }
 
 
-    private openMaterialDetailPage(data: MaterialData) {
-        this.pageMaterialDetail.active = true;
+    private openMaterialDetailPage = (data: MaterialData, index: number) => {
+        console.log("当前点击位置",index);
+        this.detailPanel.setIndex(index);
+        this.detailPanel.node.active = true;
     }
 
 

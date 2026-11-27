@@ -20,11 +20,35 @@ export class MaterialItem extends Component {
     btnItem: Button = null; // 绑定Item根节点上的button
 
     private _data: MaterialData = null;
+    private _onClickCb: (data: MaterialData, index: number) => void =null; // 外部回调
+    private _index: number = -1;        // 当前素材位置
+
+    onLoad() {
+        // 绑定点击
+        this.btnItem.node.on(Button.EventType.CLICK, this.onItemClick, this);
+    }
+
+    onDestroy() {
+        // 解绑，防止内存泄漏
+        this.btnItem.node.off(Button.EventType.CLICK, this.onItemClick, this);
+    }
+
 
     /** 接收完整素材数据 */
-    public setData(data: MaterialData) {
+    public setData(data: MaterialData, index: number) {
         this._data = data;
+        this._index = index;
         this.refreshView();
+    }
+
+    /** 外部注册点击回调 */
+    public setClickCallback(cb: (data: MaterialData, index: number) => void) {
+        this._onClickCb = cb;
+    }
+
+    private onItemClick() {
+        if (!this._data) return;
+        this._onClickCb?.(this._data, this._index);  // 把数据抛出去
     }
 
     private refreshView() {
