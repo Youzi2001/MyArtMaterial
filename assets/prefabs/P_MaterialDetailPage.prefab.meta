@@ -2,13 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "49364a00-ad7c-45aa-84b2-d7f865c70d15",
+  "uuid": "9c8f1c4c-9c61-476d-bc6f-b6e9e8687ff2",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "material-item",
-    "persistent": false
+    "syncNodeName": "P_MaterialDetailPage"
   }
 }

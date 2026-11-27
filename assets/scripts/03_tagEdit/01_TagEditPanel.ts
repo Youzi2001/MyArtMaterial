@@ -1,8 +1,8 @@
 import { _decorator, Component, Node, instantiate, Sprite,Button, Color, Label, Layout, EventTouch,UITransform, tween, Vec3, Prefab } from 'cc';
-import { AllData, STORAGE_KEY, createDefaultData } from '../common/DataTypes';
-import { StorageManager } from '../common/StorageManager';
-import { FlowLayout } from '../common/FlowLayout';
-import { TagItem, TagSize } from './TagItem';
+import { AllData, STORAGE_KEY, createDefaultData } from '../00_common/02_DataTypes';
+import { StorageManager } from '../00_common/03_StorageManager';
+import { FlowLayout } from '../00_common/04_FlowLayout';
+import { TagItem, TagSize } from './02_TagItem';
 const { ccclass, property } = _decorator;
 
 @ccclass('TagEditPage')
