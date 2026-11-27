@@ -2,11 +2,12 @@ import { _decorator, Component, Node, instantiate, Sprite,Button, Color, Label, 
 import { AllData, STORAGE_KEY, createDefaultData } from '../00_common/02_DataTypes';
 import { StorageManager } from '../00_common/03_StorageManager';
 import { FlowLayout } from '../00_common/04_FlowLayout';
+import { MaterialData } from '../00_common/02_DataTypes';
 import { TagItem, TagSize } from './02_TagItem';
 const { ccclass, property } = _decorator;
 
-@ccclass('TagEditPage')
-export class TagEditPage extends Component {
+@ccclass('TagEditPanel')
+export class TagEditPanel extends Component {
     @property(Prefab)
     tagItemPrefab: Prefab = null;
 
@@ -45,6 +46,7 @@ export class TagEditPage extends Component {
 
     private allTagList: string[] = [];
     private selectedTagLsit: string[] = [];
+    private _data: MaterialData = [];
 
 
     onLoad() {
@@ -217,6 +219,10 @@ export class TagEditPage extends Component {
         }
 
         this.refreshSelectedTagListView();
+    }
+
+    private setData(data:MaterialData) {
+        this._data = data;
     }
 }
 

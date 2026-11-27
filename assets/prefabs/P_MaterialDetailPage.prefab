@@ -1329,6 +1329,10 @@
     "SpImage": {
       "__id__": 15
     },
+    "btnTagEdit": {
+      "__id__": 39
+    },
+    "TagEditPanel": null,
     "_id": ""
   },
   {

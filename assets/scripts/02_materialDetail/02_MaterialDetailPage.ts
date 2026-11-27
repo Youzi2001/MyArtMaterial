@@ -2,8 +2,9 @@
  * 接收完整数据
  */
 
-import { _decorator, Component, Node, Sprite,resources,SpriteFrame,UITransform  } from 'cc';
+import { _decorator, Component, Button, Node, Sprite,resources,SpriteFrame,UITransform  } from 'cc';
 import { MaterialData } from '../00_common/02_DataTypes';
+import { TagEditPanel } from '../03_tagEdit/01_TagEditPanel';
 const { ccclass, property } = _decorator;
 
 @ccclass('MaterialDetailPage')
@@ -11,11 +12,25 @@ export class MaterialDetailPage extends Component {
     @property(Sprite)
     SpImage: Sprite = null;
 
+    @property(Button)
+    btnTagEdit: Button = null;
+
+    @property(TagEditPanel)
+    TagEditPanel: TagEditPanel = null;
+
     private _data: MaterialData = null;
+
+    onLoad() {
+        this.btnTagEdit.node.on(Button.EventType.CLICK, this.onBtnOpenTagEditPage, this);
+    }
 
     public setData(data: MaterialData) {
         this._data = data;
         this.refreshView();
+    }
+
+    public setTagEditPanelNode(TagEditPanel:TagEditPanel) {
+        this.TagEditPanel = TagEditPanel;
     }
 
     private refreshView() {
@@ -37,6 +52,11 @@ export class MaterialDetailPage extends Component {
             const imageUI = this.SpImage.getComponent(UITransform);
             imageUI.setContentSize(width,height);
         });
+    }
+
+    onBtnOpenTagEditPage() {
+        this.TagEditPanel.node.active = true;
+        this.TagEditPanel.setData(this._data);
     }
 
 }

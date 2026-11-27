@@ -3,6 +3,7 @@ import { AllData, STORAGE_KEY, createDefaultData } from '../00_common/02_DataTyp
 import { StorageManager } from '../00_common/03_StorageManager';
 import { MaterialData } from '../00_common/02_DataTypes';
 import { MaterialDetailPage } from './02_MaterialDetailPage'; 
+import { TagEditPanel } from '../03_tagEdit/01_TagEditPanel';
 const { ccclass, property } = _decorator;
 
 @ccclass('MaterialDetailPanel')
@@ -16,6 +17,8 @@ export class MaterialDetailPanel extends Component {
     @property(Prefab)
     materialDetailPagePrefab: Prefab = null;    // 详情页预制体
 
+    @property(TagEditPanel)
+    TagEditPanel: TagEditPanel = null;
 
     private materialList: string[] = [];
     private pageIndex: number = 0;
@@ -46,6 +49,7 @@ export class MaterialDetailPanel extends Component {
             const pageComp = newPage.getComponent(MaterialDetailPage);
             if (pageComp) {
                 pageComp.setData(material);
+                pageComp.setTagEditPanelNode(this.TagEditPanel);
             }
             this.pageViewContent.addPage(newPage);
         }
