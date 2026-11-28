@@ -20,7 +20,7 @@ export class MaterialDetailPanel extends Component {
     @property(TagEditPanel)
     TagEditPanel: TagEditPanel = null;
 
-    private materialList: string[] = [];
+    private materialList: MaterialData[] = [];
     private pageIndex: number = 0;
 
 

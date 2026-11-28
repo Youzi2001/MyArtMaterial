@@ -165,10 +165,9 @@ export class TagEditPanel extends Component {
         this.panel.setPosition(0,-this.panelHeight,0);
         if (this.isCorrect) {
             const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
-            const material = allData.materialList.find(m => m.id = this._data.id);
+            const material = allData.materialList.find(m => m.id === this._data.id);
             material.tags = this.saveTagIdLsit;
             StorageManager.inst.setObj(STORAGE_KEY,allData);
-            console.log("关闭时最终保存数据：",allData);
 
             // 保存完，广播数据变了，带上被改的素材id
             EventManager.emit(EventName.MATERIAL_DATA_CHANGED,this._data.id);

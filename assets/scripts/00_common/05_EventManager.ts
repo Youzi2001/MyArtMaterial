@@ -4,6 +4,7 @@ import { EventTarget } from "cc";
 // 可以往里面添加更多事件
 export enum EventName  {
     MATERIAL_DATA_CHANGED = 'MATERIAL_DATA_CHANGED', // 素材数据发生变更
+    ALLDATA_ADD_MATERIAL = 'ALLDATA_ADD_MATERIAL',  // 增加素材数据
 }
 
 

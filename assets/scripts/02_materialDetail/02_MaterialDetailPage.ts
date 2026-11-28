@@ -45,11 +45,13 @@ export class MaterialDetailPage extends Component {
 
     private handleDataUpdata(data: any) {
         console.log('接收到广播：',data);
+        console.log('当前页数据',this._data);
 
         // 根据数据类型刷新UI
         if (data === this._data.id) {
             const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
-            this._data = allData.materialList.find(m => m.id = this._data.id);
+            this._data = allData.materialList.find(m => m.id === data);
+            console.log("更新素材",this._data);
             this.refreshView();
         }
     }

@@ -9,6 +9,7 @@
 import { _decorator,PageView, director,SpriteFrame, UITransform, Component, Node, Prefab, instantiate, Layout, ScrollView, find, Button,Sprite, resources } from 'cc';
 import { AllData, STORAGE_KEY, createDefaultData } from '../00_common/02_DataTypes';
 import { StorageManager } from '../00_common/03_StorageManager';
+import EventManager, { EventName } from '../00_common/05_EventManager';
 import { MaterialItem } from './02_MaterialItem'; // 引入刚才写的Item脚本
 import { MaterialDetailPanel } from '../02_materialDetail/01_MaterialDetailPanel';
 const { ccclass, property } = _decorator;
