@@ -18,7 +18,7 @@ export class GameStartup extends Component {
         testData.nextIds.tag = 4;
 
         testData.materialList = [
-            { id:1, fileName: 'textures/bag/spriteFrame',width:579, height: 562},
+            { id:1, fileName: 'textures/bag/spriteFrame',width:579, height: 562,tags:[1,2]},
             { id:2, fileName: 'textures/default_material/spriteFrame',width:1590, height: 468}
         ];
         testData.nextIds.material = 3;

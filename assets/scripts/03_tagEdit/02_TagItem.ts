@@ -85,7 +85,8 @@ export class TagItem extends Component {
     private selected: boolean = false;
     private showBorder: boolean = true;
     private showClose: boolean = false;
-    private text: string = '';
+    public text: string = '';
+    public id: number = -1;
 
     private _clickCallback: tagClickback = null;
     private btnCloseClickCallback: btnClickback = null;
@@ -104,11 +105,12 @@ export class TagItem extends Component {
     /**
      * 对外统一接口：一次配置所有状态
      */
-    public setTag(text: string, config?: TagConfig) {
+    public setTag(id:number,text: string, config?: TagConfig) {
         this.size = config?.size ?? TagSize.LARGE;
         this.selected = config?.selected ?? false;
         this.showBorder = config?.showBorder ?? true;
         this.showClose = config?.showClose ?? false;
+        this.id = id;
 
         //1.关闭按钮显隐
         this.setClosebtn(this.showClose);
