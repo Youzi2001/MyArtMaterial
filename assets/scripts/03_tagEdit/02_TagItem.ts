@@ -15,7 +15,7 @@
  * 标签状态样式表
  */
 
-import { _decorator, Component, Node, Label, Button, Graphics, UITransform, Color, Sprite } from 'cc';
+import { _decorator, Component, Node, Label, Button, Graphics, UITransform, Color, Sprite, UI } from 'cc';
 const { ccclass, property } = _decorator;
 
 /** 尺寸档位 */
@@ -111,7 +111,21 @@ export class TagItem extends Component {
         //2.设文字（会改变Label尺寸）
         this.text = text;
         this.lblTag.string = text;
-        
+        // 强制Label立刻计算文本尺寸，不用等待下一帧
+        this.lblTag.updateRenderData(true);
+        // 手动把标签节点的宽高同步设置为Label尺寸+内边距
+        const labelTransform = this.lblTag.node.getComponent(UITransform);
+        const selfTransform = this.node.getComponent(UITransform);
+        const paddingX = 24;
+        const paddingY = 12;
+        const closeBtnWidth = this.showClose ? 24 : 0;
+        selfTransform.setContentSize(
+            labelTransform.width + paddingX * 2 + closeBtnWidth,
+            labelTransform.height + paddingY * 2
+        );
+
+
+        // 最后设置选中态、关闭等样式
         //3.应用尺寸样式（字号、内边距）
         this.applySizeStyle();
 
