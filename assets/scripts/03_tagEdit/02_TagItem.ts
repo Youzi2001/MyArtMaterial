@@ -88,13 +88,18 @@ export class TagItem extends Component {
     private text: string = '';
 
     private _clickCallback: tagClickback = null;
+    private btnCloseClickCallback: btnClickback = null;
     private tagClickback: (path: string) => void = null;     // 定义点击回调
+    private btnClickback: (path: string) => void = null;
 
     //=================== 注入方法 =====================
     public setClickCallback(cb: tagClickback) {
         this._clickCallback = cb;
     }
 
+    public setBtnCloseClickCallback(cb: btnClickback) {
+        this.btnCloseClickCallback = cb;
+    }
 
     /**
      * 对外统一接口：一次配置所有状态
@@ -207,11 +212,18 @@ export class TagItem extends Component {
 
     onLoad() {
         this.lblTag.node.on(Node.EventType.TOUCH_END,this.onClickSelf,this);
+        this.btnClose.node.on(Node.EventType.TOUCH_END,this.onClickBtnClose,this);
     }
 
     private onClickSelf() {
         if (this._clickCallback) {
             this._clickCallback(this);
+        }
+    }
+
+    private onClickBtnClose() {
+        if (this.btnCloseClickCallback) {
+            this.btnCloseClickCallback(this);
         }
     }
 }

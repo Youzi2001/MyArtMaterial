@@ -48,7 +48,8 @@ export class TagEditPanel extends Component {
     private isCorrect: boolean = false;
 
     private allTagList: TagData[] = [];
-    private selectedTagList: string[] = [];
+    private selectedTagItemList: TagItem[] = [];
+    private selectedTagTextList: string[] = [];
     private _data: MaterialData = [];
 
 
@@ -56,7 +57,6 @@ export class TagEditPanel extends Component {
         const allData: AllData = StorageManager.inst.getObj(STORAGE_KEY,createDefaultData());
         this.allTagList = allData.tagList || [];
 
-        console.log("已有标签列表：",this.allTagList);
         this.panelHeight = this.panel.getComponent(UITransform).height;
         this.topHeight = this.top.getComponent(UITransform).height;
         this.refreshAllTagListView();
@@ -158,7 +158,8 @@ export class TagEditPanel extends Component {
         this.drawer.active = false;
         this.panel.setPosition(0,-this.panelHeight,0);
         if (!this.isCorrect) {
-            this.selectedTagList = [];
+            this.selectedTagItemList = [];
+            this.selectedTagTextList = [];
         }
     }
 
@@ -193,18 +194,22 @@ export class TagEditPanel extends Component {
 
     private refreshSelectedTagListView() {
 
-        const hasSelected = this.selectedTagList.length > 0;
+        const hasSelected = this.selectedTagItemList.length > 0;
         const flowTransform = this.selectedTagListNode.getComponent(UITransform);
 
         this.lblNotag.node.active = !hasSelected;
         this.selectedTagListNode.removeAllChildren();
 
-        for (let i=0; i<this.selectedTagList.length; i++) {
-            const tagText = this.selectedTagList[i];
+        for (let i=0; i<this.selectedTagTextList.length; i++) {
+            const tagitem = this.selectedTagItemList[i];
+            const tagText = this.selectedTagTextList[i];
             const newItem = instantiate(this.tagItemPrefab);
             const itemComp = newItem.getComponent(TagItem);
             if (itemComp) {
                 itemComp.setTag(tagText, {size: TagSize.LARGE, selected:true, showBorder: true, showClose:true});
+                itemComp.setBtnCloseClickCallback((clickedItem: TagItem) => {
+                    this.onTagCloseBtnClick(clickedItem,tagitem);
+                });
             }
             const innerLayouts = newItem.getComponentsInChildren(Layout);
             for (const l of innerLayouts) {
@@ -226,13 +231,22 @@ export class TagEditPanel extends Component {
 
         // 如果新状态为true，向已选列表中添加标签，反之，删除标签
         if (newSelected) {
-            this.selectedTagList.push(item.text);
+            this.selectedTagItemList.push(item);
+            this.selectedTagTextList.push(item.text);
         } else {
-            const start = this.selectedTagList.indexOf(item.text);
-            this.selectedTagList.splice(start,1);
+            const index = this.selectedTagTextList.indexOf(item.text);
+            this.selectedTagTextList.splice(index,1);
+            this.selectedTagItemList.splice(index,1);
         }
 
         this.refreshSelectedTagListView();
+    }
+
+    private onTagCloseBtnClick(selectedItem:TagItem,item:TagItem) {
+        this.changeTagStyle(selectedItem);
+
+        const newSelected = !item.selected;
+        item.setSelected(newSelected);
     }
 
     private setData(data:MaterialData) {
